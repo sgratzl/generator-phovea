@@ -1,6 +1,6 @@
 {
   "mode": "file",
-  "out": "./build/docs",
+  "out": "./build/docs/frontend",
   "readme": "none",
   "hideGenerator": true,
   "includeVersion": true,

@@ -65,7 +65,8 @@
     "gulp-plumber": "^1.2.1",
     "jest-cli": "^24.9.0",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.2.0"
+    "yeoman-test": "^2.2.0",
+    "rimraf": "^3.0.2"
   },
   "eslintConfig": {
     "extends": "xo-space",

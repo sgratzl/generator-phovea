@@ -7,7 +7,7 @@ const fs = require('fs');
 
 const known = () => require('../../utils/known');
 
-function toLibraryAliasMap(moduleNames, libraryNames) {
+function toLibraryAliasMap(moduleNames = [], libraryNames = []) {
   let r = {};
   moduleNames.forEach((m) => {
     const plugin = known().plugin.byName(m);
@@ -28,7 +28,7 @@ function toLibraryAliasMap(moduleNames, libraryNames) {
   return r;
 }
 
-function toLibraryExternals(moduleNames, libraryNames) {
+function toLibraryExternals(moduleNames = [], libraryNames = []) {
   let r = [];
   moduleNames.forEach((m) => {
     const plugin = known().plugin.byName(m);

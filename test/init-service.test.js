@@ -11,31 +11,34 @@ const {template} = require('lodash');
 /**
  * Directory name to run the generator
  */
-const name = 'lib';
+const name = 'service';
 
+/**
+ * Service name
+ */
+const serviceName = 'sample';
 
 /**
  * Directory path to run the generator
  */
-const target = '../' + name;
+const target = '../' + name
 
 /**
- * Subgenerators composed with the `init-lib` subgenerator.
+ * Subgenerators composed with the `init-slib` subgenerator.
  */
 const GENERATOR_DEPENDENCIES = [
   '../generators/_node',
-  '../generators/init-lib',
-  '../generators/_init-web',
+  '../generators/_init-python',
   '../generators/_check-own-version',
   '../generators/check-node-version',
 ];
 
-describe('generate lib plugin with default prompt values', () => {
+describe('generate service plugin with default prompt values', () => {
 
 
   beforeAll(() => {
     return helpers
-      .run(path.join(__dirname, '../generators/init-lib'))
+      .run(path.join(__dirname, '../generators/init-service'))
       .inDir(path.join(__dirname, target), () => null)
       .withGenerators(GENERATOR_DEPENDENCIES);
   });
@@ -44,15 +47,14 @@ describe('generate lib plugin with default prompt values', () => {
     rimraf.sync(path.join(__dirname, target));
   });
 
-
   it('generates `package.json` with the correct devDependencies', () => {
-    const initWebDevDeps = fse.readJSONSync(testUtils.templatePath('_init-web', 'package.tmpl.json')).devDependencies;
     const nodeDevDeps = fse.readJSONSync(testUtils.templatePath('_node', 'package.tmpl.json')).devDependencies;
-    assert.jsonFileContent('package.json', {devDependencies: Object.assign(initWebDevDeps, nodeDevDeps)});
+    assert.jsonFileContent('package.json', {devDependencies: nodeDevDeps});
   });
 
   it('generates `package.json` with the correct scripts', () => {
-    const initWebScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('_init-web', 'package.tmpl.json'))))({name})).scripts;
-    assert.jsonFileContent('package.json', {scripts: initWebScripts});
+    const initPythonScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('_init-python', 'package.tmpl.json'))))({name})).scripts;
+    const initServiceScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('init-service', 'package.tmpl.json'))))({name, serviceName})).scripts;
+    assert.jsonFileContent('package.json', {scripts: Object.assign(initPythonScripts, initServiceScripts)});
   });
 });

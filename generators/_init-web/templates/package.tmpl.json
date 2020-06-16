@@ -13,7 +13,9 @@
   "scripts": {
     "compile": "tsc",
     "lint": "tslint -c tslint.json -p . 'src/**/*.ts?(x)' 'tests/**/*.ts?(x)'",
-    "docs": "typedoc --options typedoc.json src/",
+    "publish:docs": "gh-pages -d build/docs --message '[skip ci] generate docs'",
+    "clean:docs": "rimraf build/docs;",
+    "docs": "typedoc --options typedoc.json --name <%-name%> ./src/index.ts",
     "prebuild": "node -e \"process.exit(process.env.PHOVEA_SKIP_TESTS === undefined?1:0)\" || npm run test",
     "pretest": "npm run compile",
     "test": "jest",

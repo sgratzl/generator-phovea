@@ -11,7 +11,7 @@ const {template} = require('lodash');
 /**
  * Directory name to run the generator
  */
-const name = 'lib';
+const name = 'libslib';
 
 
 /**
@@ -20,22 +20,27 @@ const name = 'lib';
 const target = '../' + name;
 
 /**
- * Subgenerators composed with the `init-lib` subgenerator.
+ * Subgenerators composed with the `init-lib-slib` subgenerator.
  */
 const GENERATOR_DEPENDENCIES = [
   '../generators/_node',
+  '../generators/_init-hybrid',
   '../generators/init-lib',
   '../generators/_init-web',
+  '../generators/init-slib',
+  '../generators/_init-python',
   '../generators/_check-own-version',
   '../generators/check-node-version',
 ];
 
-describe('generate lib plugin with default prompt values', () => {
+
+
+describe('generate lib-slib plugin with default prompt values', () => {
 
 
   beforeAll(() => {
     return helpers
-      .run(path.join(__dirname, '../generators/init-lib'))
+      .run(path.join(__dirname, '../generators/init-lib-slib'))
       .inDir(path.join(__dirname, target), () => null)
       .withGenerators(GENERATOR_DEPENDENCIES);
   });
@@ -44,7 +49,6 @@ describe('generate lib plugin with default prompt values', () => {
     rimraf.sync(path.join(__dirname, target));
   });
 
-
   it('generates `package.json` with the correct devDependencies', () => {
     const initWebDevDeps = fse.readJSONSync(testUtils.templatePath('_init-web', 'package.tmpl.json')).devDependencies;
     const nodeDevDeps = fse.readJSONSync(testUtils.templatePath('_node', 'package.tmpl.json')).devDependencies;
@@ -52,7 +56,7 @@ describe('generate lib plugin with default prompt values', () => {
   });
 
   it('generates `package.json` with the correct scripts', () => {
-    const initWebScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('_init-web', 'package.tmpl.json'))))({name})).scripts;
-    assert.jsonFileContent('package.json', {scripts: initWebScripts});
+    const initHybridScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('_init-hybrid', 'package.tmpl.json'))))({name})).scripts;
+    assert.jsonFileContent('package.json', {scripts: initHybridScripts});
   });
 });

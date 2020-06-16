@@ -120,6 +120,7 @@ class PackageJSONGenerator extends Base {
     }]).then((props) => {
       if (!this.options.useDefaults) {
         this.props.description = props.description;
+        this.config.set('description', props.description);
         this.props.homepage = props.homepage;
         this.config.set('author', props.authorName);
         this.props.authorEmail = props.authorEmail;

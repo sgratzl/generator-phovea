@@ -15,5 +15,9 @@
   "repository": {
     "type": "git",
     "url": "<%-repository%>"
+  },
+  "devDependencies": {
+    "shx": "^0.3.2",
+    "gh-pages": "^3.0.0"
   }
 }

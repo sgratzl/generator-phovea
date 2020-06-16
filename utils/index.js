@@ -200,6 +200,10 @@ class BaseInitPluginGenerator extends Generator {
       this.fs.copy(this.templatePath('_gitignore'), this.destinationPath(this.cwd + '.gitignore'));
     }
 
+    if (fs.existsSync(this.templatePath('DOCS_README.md'))) {
+      this.fs.copyTpl(this.templatePath('DOCS_README.md'), this.destinationPath(this.cwd + 'docs/README.md'), config);
+    }
+
     this._writeTemplates(config, !this.options.noSamples, this.cwd);
 
   }

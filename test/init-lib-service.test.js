@@ -6,36 +6,44 @@ const helpers = require('yeoman-test');
 const rimraf = require('rimraf');
 const fse = require('fs-extra');
 const testUtils = require('./testUtils');
-const {template} = require('lodash');
+const {template, merge} = require('lodash');
 
 /**
  * Directory name to run the generator
  */
-const name = 'lib';
+const name = 'libservice';
 
+/**
+ * Service name
+ */
+const serviceName = 'sample';
 
 /**
  * Directory path to run the generator
  */
-const target = '../' + name;
-
+const target = '../' + name
 /**
- * Subgenerators composed with the `init-lib` subgenerator.
+ * Subgenerators composed with the `init-lib-service` subgenerator.
  */
 const GENERATOR_DEPENDENCIES = [
   '../generators/_node',
+  '../generators/_init-hybrid',
   '../generators/init-lib',
   '../generators/_init-web',
+  '../generators/init-service',
+  '../generators/_init-python',
   '../generators/_check-own-version',
   '../generators/check-node-version',
 ];
 
-describe('generate lib plugin with default prompt values', () => {
+
+
+describe('generate lib-service plugin with default prompt values', () => {
 
 
   beforeAll(() => {
     return helpers
-      .run(path.join(__dirname, '../generators/init-lib'))
+      .run(path.join(__dirname, '../generators/init-lib-service'))
       .inDir(path.join(__dirname, target), () => null)
       .withGenerators(GENERATOR_DEPENDENCIES);
   });
@@ -44,7 +52,6 @@ describe('generate lib plugin with default prompt values', () => {
     rimraf.sync(path.join(__dirname, target));
   });
 
-
   it('generates `package.json` with the correct devDependencies', () => {
     const initWebDevDeps = fse.readJSONSync(testUtils.templatePath('_init-web', 'package.tmpl.json')).devDependencies;
     const nodeDevDeps = fse.readJSONSync(testUtils.templatePath('_node', 'package.tmpl.json')).devDependencies;
@@ -52,7 +59,10 @@ describe('generate lib plugin with default prompt values', () => {
   });
 
   it('generates `package.json` with the correct scripts', () => {
+    const initHybridScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('_init-hybrid', 'package.tmpl.json'))))({name})).scripts;
+    const initServiceScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('init-service', 'package.tmpl.json'))))({name, serviceName})).scripts;
     const initWebScripts = JSON.parse(template(JSON.stringify(fse.readJSONSync(testUtils.templatePath('_init-web', 'package.tmpl.json'))))({name})).scripts;
-    assert.jsonFileContent('package.json', {scripts: initWebScripts});
+    const scripts = Object.assign(initServiceScripts, initWebScripts, initHybridScripts)
+    assert.jsonFileContent('package.json', {scripts});
   });
 });
