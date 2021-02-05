@@ -14,7 +14,7 @@ class Generator extends BasePhoveaGenerator {
     if (fs.existsSync(this.destinationPath('.yo-rc-workspace.json'))) {
       throw new Error(chalk.red('Found a ".yo-rc-workspace.json" file in the current directory. Please initialize a new product in an empty directory.'));
     }
-    this.services = [];
+    this.services = {};
 
     // for the update
     this.config.defaults({
@@ -47,7 +47,7 @@ class Generator extends BasePhoveaGenerator {
       message: 'add another custom additional plugin?: ',
       default: false
     }]).then((extra) => {
-      service.additional.push(extra);
+      service.additionals[extra.name] = {repo: extra.repo, branch: extra.branch};
       const custom = extra.custom === true;
       delete extra.custom;
       return custom ? this._addCustomAdditional(service) : Promise.resolve(service);
@@ -66,7 +66,7 @@ class Generator extends BasePhoveaGenerator {
         {name: 'Service', value: 'service'}],
       default: 'web'
     }, {
-      name: 'label',
+      name: 'name',
       message: 'service name:',
       validate: isRequired
     }, {
@@ -90,10 +90,11 @@ class Generator extends BasePhoveaGenerator {
       message: 'add custom additional plugin?',
       default: false
     }]).then((service) => {
-      this.services.push(service);
+      this.services[service.name] =  {type: service.type, repo: service.repo, branch: service.branch };
       const custom = service.custom === true;
       delete service.custom;
-      return custom ? this._addCustomAdditional(service) : Promise.resolve(service);
+      this.services[service.name].additionals = service.additional.reduce((obj, item) => Object.assign(obj,item), {});
+      return custom ? this._addCustomAdditional(this.services[service.name]) : Promise.resolve(service);
     }).then(() => this.prompt({
       name: 'custom',
       type: 'confirm',

@@ -146,7 +146,7 @@ class Generator extends Base {
   _createYoRcWorkspace(defaultApp) {
     const yoWorkspacePath = this.destinationPath(`${this.cwd}/.yo-rc-workspace.json`);
     if (!fs.existsSync(yoWorkspacePath && this.defaultApp)) {
-      const frontendRepos = defaultApp.additional;
+      const frontendRepos = defaultApp.additionals;
       fs.writeJsonSync(yoWorkspacePath, {
         modules: [],
         defaultApp: this.defaultApp,

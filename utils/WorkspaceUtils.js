@@ -57,11 +57,11 @@ module.exports = class WorkspaceUtils {
     if (!product) {
       return null;
     }
-    for (let p of product) {
-      if (p.type === 'web') {
+    for (let p of Object.keys(product)) {
+      if (product[p].type === 'web') {
         return {
-          name: p.repo.slice(p.repo.lastIndexOf('/') + 1).replace('.git', ''),
-          additional: p.additional.map(({name}) => name)
+          name: product[p].repo.slice(product[p].repo.lastIndexOf('/') + 1).replace('.git', ''),
+          additionals: product[p].additional.map(({name}) => name)
         };
       }
       return null;
@@ -136,7 +136,7 @@ module.exports = class WorkspaceUtils {
    */
   static buildPossibleAdditionalPlugins(type) {
     const toDescription = (d) => ({
-      value: {name: d.name, repo: RepoUtils.simplifyRepoUrl(d.repository)},
+      value: {[d.name]: {repo: RepoUtils.simplifyRepoUrl(d.repository)}},
       name: `${d.name}: ${d.description}`,
       short: d.name
     });

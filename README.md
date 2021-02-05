@@ -30,8 +30,8 @@ yo phovea
 |----------------------------|--------------|
 | `yo phovea`                | Initialize a new web application, library bundle, web library, server library, or service |
 | `yo phovea:app`            | Add an application or library |
-| `yo phovea:add-dependency` | Add an additional plugin or external libraries to the current plugin |
-| `yo phovea:add-extension`  | Add an additional web or server extension to the current plugin |
+| `yo phovea:add-dependency` | Add an additionals plugin or external libraries to the current plugin |
+| `yo phovea:add-extension`  | Add an additionals web or server extension to the current plugin |
 | `yo phovea:clone`          | DEPRECATED Clone a plugin (by plugin name) and resolve the dependencies |
 | `yo phovea:resolve`        | DEPRECATED Clone dependent plugins of the current workspace into the workspace |
 | `yo phovea:init-product`   | Create product files and repos |

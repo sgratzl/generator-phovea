@@ -19,7 +19,6 @@ const expectedFiles = [
     '.gitattributes',
     'package.json',
     'build.js',
-    'phovea_product.schema.json',
     '.circleci/config.yml',
     '.gitignore',
     'README.md',
@@ -35,17 +34,18 @@ describe('generate a product with default prompt values', () => {
         {name: pluginName}));
 
     const config = {
-        type: 'web',
-        label: 'Web App',
+        web: {
         repo: 'phovea/wep_app',
         branch: 'master',
-        additional: [{
-            'name': 'phovea_core',
-            'repo': 'phovea/phovea_core',
-        }, {
-            'name': 'phovea_ui',
-            'repo': 'phovea/phovea_ui',
-        }]
+        additionals: {
+            phovea_core: {
+                'repo': 'phovea/phovea_core'
+            },
+            phovea_ui: {
+                'repo': 'phovea/phovea_ui'
+            }
+        }
+    }
     };
 
     beforeAll(() => {

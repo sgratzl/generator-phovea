@@ -10,48 +10,44 @@ describe('Find default app in product object', () => {
     });
 
     it('returns null if product has no entry type `web`', () => {
-        const product = [
+        const product = {
+            "api":
             {
                 type: 'api',
-                label: 'phovea_ui',
                 repo: 'phovea/phovea_ui',
                 branch: 'develop',
-                additional: []
+                additionals: {}
 
-            }];
+            }};
         expect(WorkspaceUtils.findDefaultApp(product)).toBe(null);
     });
 
     it('returns parsed repo name when entry has type `web`', () => {
-        const product = [
-            {
+        const product = {
+               web: {
                 type: 'web',
-                label: 'ordino',
                 repo: 'Caleydo/ordino_public',
                 branch: 'develop',
-                additional: [
-                    {
-                        'name': 'phovea_core',
+                additionals: {
+                    'phovea_core': {
                         'repo': 'phovea/phovea_core',
                         'branch': 'develop'
                     },
-                    {
-                        'name': 'phovea_ui',
+                    'phovea_ui': {
                         'repo': 'phovea/phovea_ui',
                         'branch': 'develop'
                     }
-                ]
+                }
 
             },
-            {
+            api: {
                 type: 'api',
-                label: 'repo',
                 repo: 'org/repo',
                 branch: 'develop',
-                additional: []
+                additionals: {}
 
-            }];
-        expect(WorkspaceUtils.findDefaultApp(product)).toMatchObject({name: 'ordino_public', additional: ['phovea_core', 'phovea_ui']});
+            }};
+        expect(WorkspaceUtils.findDefaultApp(product)).toMatchObject({name: 'ordino_public', additionals: {'phovea_core': {}, 'phovea_ui': {}}});
     });
 });
 
@@ -96,8 +92,9 @@ describe('Test `buildPossibleAdditionalPlugins()`', () => {
         'name': 'phovea_core: Phovea Core Plugin',
         'short': 'phovea_core',
         'value': {
-            'name': 'phovea_core',
-            'repo': 'phovea/phovea_core',
+            'phovea_core': {
+                'repo': 'phovea/phovea_core'
+            }
         },
     }];
         expect(WorkspaceUtils.buildPossibleAdditionalPlugins('web')).toMatchObject(result);
@@ -109,8 +106,9 @@ describe('Test `buildPossibleAdditionalPlugins()`', () => {
             'name': 'phovea_server: Phovea Server Plugin',
             'short': 'phovea_server',
             'value': {
-                'name': 'phovea_server',
-                'repo': 'phovea/phovea_server',
+                'phovea_server': {
+                    'repo': 'phovea/phovea_server'
+                }
             },
         }];
         expect(WorkspaceUtils.buildPossibleAdditionalPlugins('python')).toMatchObject(result);

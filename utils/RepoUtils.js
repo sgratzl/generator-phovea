@@ -107,22 +107,22 @@ module.exports = class RepoUtils {
   static parsePhoveaProduct(product) {
     const names = new Set();
     const repos = [];
-    product.forEach((p) => {
-      const repo = p.repo || 'phovea/' + p.name;
+    Object.keys(product).forEach((p) => {
+      const repo = product[p].repo || 'phovea/' + product[p].name;
       if (!names.has(repo)) {
         names.add(repo);
         repos.push({
           repo,
-          branch: p.branch || 'master'
+          branch: product[p].branch || 'master'
         });
       }
-      (p.additional || []).forEach((pi) => {
-        const repo = pi.repo || 'phovea/' + pi.name;
+      (Object.keys(product[p].additionals)).forEach((pi) => {
+        const repo = product[p].additionals[pi].repo || 'phovea/' + product[p].additionals[pi].name;
         if (!names.has(repo)) {
           names.add(repo);
           repos.push({
             repo,
-            branch: pi.branch || 'master'
+            branch: product[p].additionals[pi].branch || 'master'
           });
         }
       });
