@@ -189,7 +189,7 @@ class Generator extends BasePhoveaGenerator {
       // no pre post test tasks
       Object.keys(pkg.scripts).filter((s) => !/^(pre|post).*/g.test(s)).forEach((s) => {
         // generate scoped tasks
-        scripts[`${s}:${p}`] = `cd ${p} && npm run ${s}`;
+        scripts[`${s}:${p}`] = `cd ${p} && npm run ${s} --`; // add `--` in order to be able to pass arguments to the script
       });
     });
 
@@ -313,7 +313,7 @@ class Generator extends BasePhoveaGenerator {
         // no pre post test tasks
         cmds.filter((s) => toPatch.test(s)).forEach((s) => {
           // generate scoped tasks
-          let cmd = `.${path.sep}withinEnv "exec 'cd ${p} && npm run ${s}'"`;
+          let cmd = `.${path.sep}withinEnv "exec 'cd ${p} && npm run ${s}'" --`;
           if (/^(start|watch)/g.test(s)) {
             // special case for start to have the right working directory
             let fixedscript = pkg.scripts[s].replace(/__main__\.py/, p);
