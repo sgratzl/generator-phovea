@@ -172,6 +172,16 @@ class PackageJSONGenerator extends BasePhoveaGenerator {
       cwd: this.destinationPath(this.cwd)
     });
 
+    this.spawnCommandSync('git', ['add', '--all'], {
+      cwd: this.destinationPath(this.cwd)
+    });
+    this.spawnCommandSync('git', ['commit', '-am', '"Initial commit"'], {
+      cwd: this.destinationPath(this.cwd)
+    });
+    this.spawnCommandSync('git', ['checkout', '-b', 'develop'], {
+      cwd: this.destinationPath(this.cwd)
+    });
+
     // after all the files have been written move the config file from the workspace to the plugin subdirectory
     if (this.isWorkspace) {
       this._moveConfigFile();
