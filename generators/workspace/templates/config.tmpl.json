@@ -1,5 +1,6 @@
 {
   "phovea_server": {
+    "ptvsd_debugger": false,
     "disable": {
       "plugins": []
     }
